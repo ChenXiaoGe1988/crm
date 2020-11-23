@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE configuration
+        PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-config.dtd">
+<!--mybatis配置-->
+<configuration>
+
+    <!--加载类路径下的属性文件-->
+    <properties resource="jdbc.properties"/>
+    <typeAliases>
+        <package name="com.ckb.crm.settings.domain"/>
+        <package name="com.ckb.crm.workbench.domain"/>
+
+    </typeAliases>
+
+    <!--全局环境配置-->
+    <environments default="development">
+        <environment id="development">
+            <!--事务-->
+            <transactionManager type="JDBC"/>
+            <!--配置数据源-->
+            <dataSource type="POOLED">
+                <!--数据库驱动-->
+                <property name="driver" value="${mysql.driver}"/>
+                <property name="url" value="${mysql.url}"/>
+                <property name="username" value="${mysql.username}"/>
+                <property name="password" value="${mysql.password}"/>
+            </dataSource>
+        </environment>
+    </environments>
+
+    <!--引入自定义mapper.xml-->
+    <mappers>
+        <package name="com.ckb.crm.settings.dao"/>
+        <package name="com.ckb.crm.workbench.dao"/>
+    </mappers>
+</configuration>

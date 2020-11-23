@@ -1,0 +1,124 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+ PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+ "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--接口的全限定名-->
+<mapper namespace="com.ckb.crm.workbench.dao.CustomerDao">
+
+    <select id="detail" resultType="Customer">
+        select
+         c.id,
+         u.name as owner,
+         c.name,
+         c.website,
+         c.phone,
+         c.createBy,
+         c.createTime,
+         c.editBy,
+         c.editTime,
+         c.contactSummary,
+         c.nextContactTime,
+         c.description,
+         c.address
+
+        from tbl_customer c
+        join tbl_user u
+        on c.owner=u.id
+        where
+        c.id=#{id}
+    </select>
+
+    <select id="getCustomerListByCondition" resultType="Customer">
+
+        select
+        c.id,
+        c.name,
+        u.name as owner,
+        c.phone,
+        c.website
+        from tbl_customer c
+        join tbl_user u
+        on c.owner=u.id
+
+        <where>
+            <if test="name!=null and name!=''">
+                c.name like '%' #{name} '%'
+            </if>
+            <if test="owner!=null and owner!=''">
+                and u.name like '%' #{owner} '%'
+            </if>
+            <if test="phone!=null and phone!=''">
+                and c.phone &gt; #{phone}
+            </if>
+            <if test="website!=null and website!=''">
+                and c.website &lt; #{website}
+            </if>
+        </where>
+
+
+        order by c.createTime desc
+        limit #{skipCount}, #{pageSize}
+
+    </select>
+
+    <select id="getTotalByCondition" resultType="int">
+                select count(*)
+
+                from tbl_customer c
+                join tbl_user u
+                on c.owner=u.id
+        </select>
+
+    <insert id="save">
+        insert into tbl_customer(
+        id,
+        owner,
+        name,
+        phone,
+        website,
+        contactSummary,
+        nextContactTime,
+        description,
+        address,
+        createTime,
+        createBy
+        )
+        values (
+        #{id},
+        #{owner},
+        #{name},
+        #{phone},
+        #{website},
+        #{contactSummary},
+        #{nextContactTime},
+        #{description},
+        #{address},
+        #{createTime},
+        #{createBy}
+        )
+    </insert>
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
